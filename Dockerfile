@@ -1,5 +1,5 @@
-# Utiliza una imagen base con OpenJDK 17 y Gradle 7.4.0
-FROM gradle:7.4.0-jdk21 AS build
+# Utiliza una imagen base con OpenJDK 21 y Gradle 8.1.1
+FROM gradle:8.1.1-jdk21 AS build
 
 # Establece el directorio de trabajo
 WORKDIR /app
@@ -13,8 +13,8 @@ RUN chmod +x gradlew
 # Construye tu aplicación con Gradle usando el wrapper
 RUN ./gradlew clean build --no-daemon
 
-# Cambia a una imagen más ligera de OpenJDK 17 para la ejecución
-FROM openjdk:21-jdk-slim
+# Cambia a una imagen más ligera de OpenJDK 21 para la ejecución
+FROM eclipse-temurin:21-jdk-slim
 
 # Establece el directorio de trabajo
 WORKDIR /app
