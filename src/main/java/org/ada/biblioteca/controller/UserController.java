@@ -30,13 +30,13 @@ public class UserController {
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{idUser}")
+    @PutMapping("/put/{idUser}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable("idUser") String idUser, @RequestBody UserRequestUpdate userRequestUpdate) {
         UserResponse userResponse = userService.updateUser(idUser, userRequestUpdate);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idUser}")
+    @DeleteMapping("/delete/{idUser}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable("idUser") String idUser) {
         userService.deleteUser(idUser);
         Map<String, String> response = new HashMap<>();

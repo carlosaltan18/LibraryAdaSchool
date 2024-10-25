@@ -17,7 +17,7 @@ import java.util.Map;
 public class RoleController {
     private final RoleService roleService;
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Role> createRole(@RequestBody Role role) {
         Role createdRole = roleService.createRole(role);
         return new ResponseEntity<>(createdRole, HttpStatus.CREATED);
@@ -34,13 +34,13 @@ public class RoleController {
         Role role = roleService.findRoleById(idRole);
         return new ResponseEntity<>(role, HttpStatus.OK);
     }
-    @PutMapping("{idRole}")
+    @PutMapping("/put/{idRole}")
     public ResponseEntity<Role> updateRole(@PathVariable("idRole") String idRole, @RequestBody Role role) {
         Role updatedRole = roleService.updateRole(idRole, role);
         return new ResponseEntity<>(updatedRole, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idRole}")
+    @DeleteMapping("/delete/{idRole}")
     public ResponseEntity<Map<String, String>> deleteRole(@PathVariable("idRole") String idRole) {
         roleService.deleteRole(idRole);
         Map<String, String> response = new HashMap<>();
