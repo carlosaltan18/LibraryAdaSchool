@@ -1,5 +1,5 @@
-# Utiliza una imagen base con OpenJDK 21 y Gradle 8.1.1
-FROM gradle-8.10.2-jdk21 AS build
+# Utiliza una imagen base con OpenJDK 21 y Gradle 8.10.2
+FROM gradle:8.10.2-jdk21 AS build
 
 # Establece el directorio de trabajo
 WORKDIR /app
