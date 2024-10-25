@@ -14,7 +14,7 @@ RUN chmod +x gradlew
 RUN ./gradlew clean build --no-daemon
 
 # Cambia a una imagen más ligera de OpenJDK 17 para la ejecución
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 # Establece el directorio de trabajo
 WORKDIR /app
