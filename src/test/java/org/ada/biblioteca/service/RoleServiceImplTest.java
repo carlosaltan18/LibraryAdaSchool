@@ -32,100 +32,81 @@ class RoleServiceImplTest {
 
     @Test
     void testFindRoleById_Success() {
-        // Arrange
         String idRole = "1";
         Role role = new Role();
-        role.setRole("USER");
+        role.setRole("ROLE_ADMIN");
         when(roleRepository.findRoleById(idRole)).thenReturn(Optional.of(role));
-
-        // Act
         Role result = roleService.findRoleById(idRole);
 
-        // Assert
         assertNotNull(result);
-        assertEquals("USER", result.getRole());
+        assertEquals("ROLE_ADMIN", result.getRole());
         verify(roleRepository, times(1)).findRoleById(idRole);
     }
 
     @Test
     void testFindRoleById_NotFound() {
-        // Arrange
-        String idRole = "1";
+        String idRole = "5";
         when(roleRepository.findRoleById(idRole)).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             roleService.findRoleById(idRole);
         });
 
-        assertEquals("Role not found with id 1", exception.getMessage());
+        assertEquals("Role not found with id 5", exception.getMessage());
         verify(roleRepository, times(1)).findRoleById(idRole);
     }
 
     @Test
     void testUpdateRole_Success() {
-        // Arrange
-        String idRole = "1";
+        String idRole = "2";
         Role role = new Role();
-        role.setRole("ADMIN");
+        role.setRole("ROLE_USER");
         Role existingRole = new Role();
-        existingRole.setRole("USER");
+        existingRole.setRole("ROLE_ADMIN");
         when(roleRepository.findRoleById(idRole)).thenReturn(Optional.of(existingRole));
         when(roleRepository.updateRole(existingRole)).thenReturn(existingRole);
 
-        // Act
         Role result = roleService.updateRole(idRole, role);
 
-        // Assert
         assertNotNull(result);
-        assertEquals("ADMIN", result.getRole());
+        assertEquals("ROLE_ADMIN", result.getRole());
         verify(roleRepository, times(1)).findRoleById(idRole);
         verify(roleRepository, times(1)).updateRole(existingRole);
     }
 
     @Test
     void testUpdateRole_NotFound() {
-        // Arrange
-        String idRole = "1";
+        String idRole = "8";
         Role role = new Role();
         when(roleRepository.findRoleById(idRole)).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             roleService.updateRole(idRole, role);
         });
-
-        assertEquals("Role not found with id 1", exception.getMessage());
+        assertEquals("Role not found with id 8", exception.getMessage());
         verify(roleRepository, times(1)).findRoleById(idRole);
     }
 
     @Test
     void testDeleteRole_Success() {
-        // Arrange
-        String idRole = "1";
+        String idRole = "9";
         Role role = new Role();
         when(roleRepository.findRoleById(idRole)).thenReturn(Optional.of(role));
 
-        // Act
         roleService.deleteRole(idRole);
-
-        // Assert
         verify(roleRepository, times(1)).findRoleById(idRole);
         verify(roleRepository, times(1)).deleteRole(idRole);
     }
 
     @Test
     void testDeleteRole_NotFound() {
-        // Arrange
-        String idRole = "1";
+        String idRole = "8";
         when(roleRepository.findRoleById(idRole)).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             roleService.deleteRole(idRole);
         });
-
-        assertEquals("Role not found with id 1", exception.getMessage());
+        assertEquals("Role not found with id 8", exception.getMessage());
         verify(roleRepository, times(1)).findRoleById(idRole);
     }
 }

@@ -32,11 +32,8 @@ class RoleControllerTest {
         Role role = new Role();
         role.setIdRole("1");
         role.setRole("ROLE_USER");
-
         when(roleService.createRole(any(Role.class))).thenReturn(role);
-
         ResponseEntity<Role> response = roleController.createRole(role);
-
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(role, response.getBody());
     }
@@ -46,16 +43,12 @@ class RoleControllerTest {
         Role role1 = new Role();
         role1.setIdRole("1");
         role1.setRole("ROLE_USER");
-
         Role role2 = new Role();
         role2.setIdRole("2");
         role2.setRole("ROLE_ADMIN");
-
         List<Role> roles = Arrays.asList(role1, role2);
         when(roleService.getRoles()).thenReturn(roles);
-
         ResponseEntity<List<Role>> response = roleController.getRoles();
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(roles, response.getBody());
     }
@@ -65,11 +58,9 @@ class RoleControllerTest {
         Role role = new Role();
         role.setIdRole("1");
         role.setRole("ROLE_USER");
-
         when(roleService.findRoleById("1")).thenReturn(role);
 
         ResponseEntity<Role> response = roleController.getRole("1");
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(role, response.getBody());
     }
@@ -79,11 +70,8 @@ class RoleControllerTest {
         Role role = new Role();
         role.setIdRole("1");
         role.setRole("ROLE_USER");
-
         when(roleService.updateRole(eq("1"), any(Role.class))).thenReturn(role);
-
         ResponseEntity<Role> response = roleController.updateRole("1", role);
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(role, response.getBody());
     }
@@ -93,11 +81,8 @@ class RoleControllerTest {
         String roleId = "1";
         Map<String, String> expectedResponse = new HashMap<>();
         expectedResponse.put("message", "Role deleted successfully");
-
         doNothing().when(roleService).deleteRole(roleId);
-
         ResponseEntity<Map<String, String>> response = roleController.deleteRole(roleId);
-
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse, response.getBody());
     }

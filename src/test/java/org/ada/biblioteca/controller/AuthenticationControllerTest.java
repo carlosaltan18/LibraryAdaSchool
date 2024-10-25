@@ -36,8 +36,6 @@ class AuthenticationControllerTest {
         UserRequest registerUserDto = new UserRequest();
         registerUserDto.setUsername("testUser");
         registerUserDto.setPassword("testPassword");
-
-        // Crear un usuario simulado
         User registeredUser = new User();
         registeredUser.setUsername("testUser");
 

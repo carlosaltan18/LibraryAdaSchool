@@ -34,145 +34,120 @@ class BookServiceImplTest {
 
     @Test
     void testCreateBook_Success() {
-        // Arrange
         Book book = new Book();
-        book.setTitle("La Tercera");
-        book.setAuthor("Alejandro Wall");
-        book.setIsbn("123456789");
+        book.setTitle("Harry potter");
+        book.setAuthor("JK ROWLING");
+        book.setIsbn("123456562");
 
         when(bookRepository.createBook(book)).thenReturn(book);
 
-        // Act
         Book result = bookService.createBook(book);
 
-        // Assert
         assertNotNull(result);
-        assertEquals("La Tercera", result.getTitle());
+        assertEquals("Harry potter", result.getTitle());
         verify(bookRepository, times(1)).createBook(book);
     }
 
     @Test
     void testGetBooks_Success() {
-        // Arrange
         Book book = new Book();
-        book.setTitle("La Tercera");
-        book.setAuthor("Alejandro Wall");
-        book.setIsbn("123456789");
+        book.setTitle("Harry potter");
+        book.setAuthor("JK ROWLING");
+        book.setIsbn("123456562");
 
         when(bookRepository.getBooks()).thenReturn(Collections.singletonList(book));
 
-        // Act
         List<Book> result = bookService.getBooks();
 
-        // Assert
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals("La Tercera", result.get(0).getTitle());
+        assertEquals("Harry potter", result.get(0).getTitle());
         verify(bookRepository, times(1)).getBooks();
     }
 
     @Test
     void testFindBookById_Success() {
-        // Arrange
         String idBook = "1";
         Book book = new Book();
-        book.setTitle("La Tercera");
+        book.setTitle("Harry potter");
         when(bookRepository.findBookById(idBook)).thenReturn(Optional.of(book));
-
-        // Act
         Book result = bookService.findBookById(idBook);
-
-        // Assert
         assertNotNull(result);
-        assertEquals("La Tercera", result.getTitle());
+        assertEquals("Harry potter", result.getTitle());
         verify(bookRepository, times(1)).findBookById(idBook);
     }
 
     @Test
     void testFindBookById_NotFound() {
-        // Arrange
         String idBook = "1";
         when(bookRepository.findBookById(idBook)).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             bookService.findBookById(idBook);
         });
-
         assertEquals("Book not found with ID: 1", exception.getMessage());
         verify(bookRepository, times(1)).findBookById(idBook);
     }
 
     @Test
     void testUpdateBook_Success() {
-        // Arrange
         String idBook = "1";
         Book bookToUpdate = new Book();
-        bookToUpdate.setTitle("Updated Book");
-        bookToUpdate.setAuthor("Updated Author");
-        bookToUpdate.setIsbn("987654321");
+        bookToUpdate.setTitle("El conjuro");
+        bookToUpdate.setAuthor("alguien");
+        bookToUpdate.setIsbn("562324465");
 
         Book existingBook = new Book();
-        existingBook.setTitle("Original Book");
-        existingBook.setAuthor("Original Author");
-        existingBook.setIsbn("123456789");
+        existingBook.setTitle("New");
+        existingBook.setAuthor("New");
+        existingBook.setIsbn("455684");
 
         when(bookRepository.findBookById(idBook)).thenReturn(Optional.of(existingBook));
         when(bookRepository.updateBook(existingBook)).thenReturn(existingBook);
 
-        // Act
         Book result = bookService.updateBook(idBook, bookToUpdate);
 
-        // Assert
         assertNotNull(result);
-        assertEquals("Updated Book", result.getTitle());
+        assertEquals("El conjuro", result.getTitle());
         verify(bookRepository, times(1)).findBookById(idBook);
         verify(bookRepository, times(1)).updateBook(existingBook);
     }
 
     @Test
     void testUpdateBook_NotFound() {
-        // Arrange
-        String idBook = "1";
+        String idBook = "8";
         Book bookToUpdate = new Book();
         when(bookRepository.findBookById(idBook)).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             bookService.updateBook(idBook, bookToUpdate);
         });
 
-        assertEquals("Book not found with ID: 1", exception.getMessage());
+        assertEquals("Book not found with ID: 8", exception.getMessage());
         verify(bookRepository, times(1)).findBookById(idBook);
     }
 
     @Test
     void testDeleteBook_Success() {
-        // Arrange
         String idBook = "1";
         Book book = new Book();
         when(bookRepository.findBookById(idBook)).thenReturn(Optional.of(book));
 
-        // Act
         bookService.deleteBook(idBook);
 
-        // Assert
         verify(bookRepository, times(1)).findBookById(idBook);
         verify(bookRepository, times(1)).deleteBook(idBook);
     }
 
     @Test
     void testDeleteBook_NotFound() {
-        // Arrange
-        String idBook = "1";
+        String idBook = "7";
         when(bookRepository.findBookById(idBook)).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             bookService.deleteBook(idBook);
         });
-
-        assertEquals("Book not found with ID: 1", exception.getMessage());
+        assertEquals("Book not found with ID: 7", exception.getMessage());
         verify(bookRepository, times(1)).findBookById(idBook);
     }
 }

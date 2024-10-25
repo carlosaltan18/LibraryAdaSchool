@@ -63,26 +63,23 @@ class AuthenticationServiceTest {
         when(roleRepository.findRoleByName("ROLE_USER")).thenReturn(Optional.of(role));
 
         User user = new User();
-        user.setRoles(new HashSet<>()); // Inicializar el Set de roles
+        user.setRoles(new HashSet<>());
         when(userRepository.createUser(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         User result = authenticationService.signup(userRequest);
 
-        // Assert
         assertNotNull(result);
         assertEquals("Test User", result.getName());
         assertEquals("testuser", result.getUsername());
         assertEquals("test@example.com", result.getEmail());
         assertEquals("encodedPassword", result.getPassword());
         assertEquals(1, result.getRoles().size());
-        assertTrue(result.getRoles().contains(role)); // Verificar que el rol está presente
+        assertTrue(result.getRoles().contains(role));
         verify(userRepository, times(1)).createUser(any(User.class));
     }
 
     @Test
     void testSignup_RoleNotFound() {
-        // Arrange
         UserRequest userRequest = new UserRequest();
         userRequest.setName("Test User");
         userRequest.setUsername("testuser");
@@ -91,18 +88,15 @@ class AuthenticationServiceTest {
 
         when(roleRepository.findRoleByName("ROLE_USER")).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             authenticationService.signup(userRequest);
         });
-
         assertEquals("error creating user, could not assign a role", exception.getMessage());
         verify(userRepository, never()).createUser(any(User.class));
     }
 
     @Test
     void testLogin_Success() {
-        // Arrange
         UserRequestLogin userRequestLogin = new UserRequestLogin();
         userRequestLogin.setUsername("testuser");
         userRequestLogin.setPassword("password");
@@ -114,10 +108,8 @@ class AuthenticationServiceTest {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
         when(userRepository.findUserByUsername(userRequestLogin.getUsername())).thenReturn(Optional.of(user));
 
-        // Act
         User result = authenticationService.login(userRequestLogin);
 
-        // Assert
         assertNotNull(result);
         assertEquals("testuser", result.getUsername());
         verify(userRepository, times(1)).findUserByUsername(userRequestLogin.getUsername());
@@ -125,7 +117,6 @@ class AuthenticationServiceTest {
 
     @Test
     void testLogin_UserNotFound() {
-        // Arrange
         UserRequestLogin userRequestLogin = new UserRequestLogin();
         userRequestLogin.setUsername("testuser");
         userRequestLogin.setPassword("password");
@@ -133,7 +124,6 @@ class AuthenticationServiceTest {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
         when(userRepository.findUserByUsername(userRequestLogin.getUsername())).thenReturn(Optional.empty());
 
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             authenticationService.login(userRequestLogin);
         });
@@ -144,7 +134,6 @@ class AuthenticationServiceTest {
 
     @Test
     void testGetRolesName_Success() {
-        // Arrange
         User user = new User();
         Role role1 = new Role();
         role1.setRole("ROLE_USER");
@@ -155,11 +144,7 @@ class AuthenticationServiceTest {
         roles.add(role1);
         roles.add(role2);
         user.setRoles(roles);
-
-        // Act
         List<String> rolesNames = authenticationService.getRolesName(user);
-
-        // Assert
         assertNotNull(rolesNames);
         assertEquals(2, rolesNames.size());
         assertTrue(rolesNames.contains("ROLE_USER"));

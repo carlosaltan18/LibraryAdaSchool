@@ -36,14 +36,10 @@ class UserControllerTest {
 
     @Test
     void testGetUsers() {
-        // Arrange
         UserResponse userResponse = new UserResponse();
         when(userService.getUsers()).thenReturn(Collections.singletonList(userResponse));
 
-        // Act
         ResponseEntity<List<UserResponse>> response = userController.getUsers();
-
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().size());
         assertEquals(userResponse, response.getBody().get(0));
@@ -51,49 +47,32 @@ class UserControllerTest {
 
     @Test
     void testGetUser() {
-        // Arrange
-        String userId = "123";
+        String userId = "123456";
         UserResponse userResponse = new UserResponse();
         when(userService.findUserById(userId)).thenReturn(userResponse);
-
-        // Act
         ResponseEntity<UserResponse> response = userController.getUser(userId);
-
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(userResponse, response.getBody());
     }
 
     @Test
     void testUpdateUser() {
-        // Arrange
-        String userId = "123";
+        String userId = "123456";
         UserRequestUpdate userRequestUpdate = new UserRequestUpdate();
         UserResponse updatedUserResponse = new UserResponse();
         when(userService.updateUser(eq(userId), any(UserRequestUpdate.class))).thenReturn(updatedUserResponse);
-
-        // Act
         ResponseEntity<UserResponse> response = userController.updateUser(userId, userRequestUpdate);
-
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(updatedUserResponse, response.getBody());
     }
 
     @Test
     void testDeleteUser() {
-        // Arrange
-        String userId = "123";
-
-        // Act
+        String userId = "123456";
         ResponseEntity<Map<String, String>> response = userController.deleteUser(userId);
-
-        // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().containsKey("message"));
         assertEquals("User deleted successfully", response.getBody().get("message"));
-
-        // Verifica que el método deleteUser en el servicio fue llamado
         verify(userService, times(1)).deleteUser(userId);
     }
 }

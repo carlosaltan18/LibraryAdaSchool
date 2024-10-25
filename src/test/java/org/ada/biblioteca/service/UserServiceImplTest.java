@@ -41,7 +41,6 @@ class UserServiceImplTest {
 
     @Test
     void testGetUsers() {
-        // Arrange
         User user1 = new User();
         User user2 = new User();
         UserResponse response1 = new UserResponse();
@@ -50,17 +49,11 @@ class UserServiceImplTest {
         when(userRepository.getUsers()).thenReturn(Arrays.asList(user1, user2));
         when(userCaster.userToUserResponse(user1)).thenReturn(response1);
         when(userCaster.userToUserResponse(user2)).thenReturn(response2);
-
-        // Act
         var result = userService.getUsers();
 
-        // Assert
         assertEquals(2, result.size());
-
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
         verify(userCaster, times(2)).userToUserResponse(captor.capture());
-
-
         List<User> capturedUsers = captor.getAllValues();
         assertEquals(user1, capturedUsers.get(0));
         assertEquals(user2, capturedUsers.get(1));
@@ -69,17 +62,14 @@ class UserServiceImplTest {
 
     @Test
     void testFindUserById_UserFound() {
-        // Arrange
-        String idUser = "1";
+        String idUser = "4";
         User user = new User();
         UserResponse userResponse = new UserResponse();
         when(userRepository.findUserById(idUser)).thenReturn(Optional.of(user));
         when(userCaster.userToUserResponse(user)).thenReturn(userResponse);
 
-        // Act
         var result = userService.findUserById(idUser);
 
-        // Assert
         assertNotNull(result);
         assertEquals(userResponse, result);
         verify(userRepository, times(1)).findUserById(idUser);
@@ -87,11 +77,8 @@ class UserServiceImplTest {
 
     @Test
     void testFindUserById_UserNotFound() {
-        // Arrange
-        String idUser = "1";
+        String idUser = "8";
         when(userRepository.findUserById(idUser)).thenReturn(Optional.empty());
-
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             userService.findUserById(idUser);
         });
@@ -102,24 +89,20 @@ class UserServiceImplTest {
     @Test
     void testUpdateUser() {
         // Arrange
-        String idUser = "1";
+        String idUser = "4";
         UserRequestUpdate requestUpdate = new UserRequestUpdate();
-        requestUpdate.setName("Lionel Messi");
-        requestUpdate.setUsername("messi");
-        requestUpdate.setEmail("messi@gmail.com");
-
+        requestUpdate.setName("Crlos");
+        requestUpdate.setUsername("Cortez");
+        requestUpdate.setEmail("ccort@gmail.com");
         User user = new User();
         User updatedUser = new User();
         UserResponse userResponse = new UserResponse();
-
         when(userRepository.findUserById(idUser)).thenReturn(Optional.of(user));
         when(userRepository.updateUser(user)).thenReturn(updatedUser);
         when(userCaster.userToUserResponse(updatedUser)).thenReturn(userResponse);
 
-        // Act
         var result = userService.updateUser(idUser, requestUpdate);
 
-        // Assert
         assertNotNull(result);
         assertEquals(userResponse, result);
         verify(userRepository, times(1)).findUserById(idUser);
@@ -128,26 +111,18 @@ class UserServiceImplTest {
 
     @Test
     void testDeleteUser_UserFound() {
-        // Arrange
-        String idUser = "1";
+        String idUser = "4";
         User user = new User();
         when(userRepository.findUserById(idUser)).thenReturn(Optional.of(user));
-
-        // Act
         userService.deleteUser(idUser);
-
-        // Assert
         verify(userRepository, times(1)).findUserById(idUser);
         verify(userRepository, times(1)).deleteUser(idUser);
     }
 
     @Test
     void testDeleteUser_UserNotFound() {
-        // Arrange
-        String idUser = "1";
+        String idUser = "2";
         when(userRepository.findUserById(idUser)).thenReturn(Optional.empty());
-
-        // Act & Assert
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             userService.deleteUser(idUser);
         });
