@@ -18,7 +18,7 @@ import java.util.Map;
 public class LoanController {
     private final LoanService loanService;
 
-    @PostMapping("/{idBook}")
+    @PostMapping("/save/{idBook}")
     public ResponseEntity<LoanResponse> createLoan(@PathVariable String idBook, @RequestBody Loan loan) {
         LoanResponse newLoan = loanService.createLoan(idBook, loan);
         return new ResponseEntity<>(newLoan, HttpStatus.CREATED);
@@ -36,13 +36,13 @@ public class LoanController {
         return new ResponseEntity<>(loan, HttpStatus.OK);
     }
 
-    @PutMapping("/{idBook}")
+    @PutMapping("/put/{idBook}")
     public ResponseEntity<LoanResponse> updateLoan(@PathVariable String idBook, @RequestBody Loan loan) {
         LoanResponse newLoan = loanService.updateLoan(idBook, loan);
         return new ResponseEntity<>(newLoan, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idBook}")
+    @DeleteMapping("/delete/{idBook}")
     public ResponseEntity<Map<String, String>> deleteLoan(@PathVariable String idBook) {
         loanService.deleteLoan(idBook);
         Map<String, String> response = new HashMap<>();

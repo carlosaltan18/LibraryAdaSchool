@@ -17,7 +17,7 @@ import java.util.Map;
 public class BookController {
     private final BookService bookService;
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         Book bookCreated = bookService.createBook(book);
         return new ResponseEntity<>(bookCreated, HttpStatus.CREATED);
@@ -35,13 +35,13 @@ public class BookController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
-    @PutMapping("/{idBook}")
+    @PutMapping("/put/{idBook}")
     public ResponseEntity<Book> updateBook(@PathVariable String idBook, @RequestBody Book book) {
         Book bookUpdated = bookService.updateBook(idBook, book);
         return new ResponseEntity<>(bookUpdated, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{idBook}")
+    @DeleteMapping("/delete/{idBook}")
     public ResponseEntity<Map<String, String>> deleteBook(@PathVariable String idBook) {
         bookService.deleteBook(idBook);
         Map<String, String> response = new HashMap<>();
