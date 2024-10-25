@@ -1,4 +1,3 @@
-# Utiliza una imagen base con OpenJDK 17 y Gradle 7.4.0
 FROM gradle:7.4.0-jdk17 AS build
 
 # Establece el directorio de trabajo
