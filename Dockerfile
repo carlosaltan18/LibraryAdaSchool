@@ -14,7 +14,7 @@ RUN chmod +x gradlew
 RUN ./gradlew clean build --no-daemon
 
 # Cambia a una imagen más ligera de OpenJDK 21 para la ejecución
-FROM eclipse-temurin:21-jdk-slim
+FROM openjdk:21-slim
 
 # Establece el directorio de trabajo
 WORKDIR /app
