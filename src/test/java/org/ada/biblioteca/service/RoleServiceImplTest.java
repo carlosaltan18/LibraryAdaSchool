@@ -69,7 +69,7 @@ class RoleServiceImplTest {
         Role result = roleService.updateRole(idRole, role);
 
         assertNotNull(result);
-        assertEquals("ROLE_ADMIN", result.getRole());
+        assertEquals("ROLE_USER", result.getRole());
         verify(roleRepository, times(1)).findRoleById(idRole);
         verify(roleRepository, times(1)).updateRole(existingRole);
     }
